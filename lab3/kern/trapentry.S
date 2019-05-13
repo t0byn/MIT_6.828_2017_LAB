@@ -46,10 +46,48 @@
 /*
  * Lab 3: Your code here for generating entry points for the different traps.
  */
+# My code:
+TRAPHANDLER_NOEC(intr_handler_0, 0);     # 0   T_DIVIDE
+TRAPHANDLER_NOEC(intr_handler_1, 1);     # 1   T_DEBUG
+TRAPHANDLER_NOEC(intr_handler_2, 2);     # 2   T_NMI
+TRAPHANDLER_NOEC(intr_handler_3, 3);     # 3   T_BRKPT
+TRAPHANDLER_NOEC(intr_handler_4, 4);     # 4   T_OFLOW
+TRAPHANDLER_NOEC(intr_handler_5, 5);     # 5   T_BOUND
+TRAPHANDLER_NOEC(intr_handler_6, 6);     # 6   T_ILLOP
+TRAPHANDLER_NOEC(intr_handler_7, 7);     # 7   T_DEVICE
+TRAPHANDLER(intr_handler_8, 8);          # 8   T_DBLFLT
+TRAPHANDLER(intr_handler_10, 10);        # 10  T_TSS
+TRAPHANDLER(intr_handler_11, 11);        # 11  T_SEGNP
+TRAPHANDLER(intr_handler_12, 12);        # 12  T_STACK
+TRAPHANDLER(intr_handler_13, 13);        # 13  T_GPFLT
+TRAPHANDLER(intr_handler_14, 14);        # 14  T_PGFLT
+TRAPHANDLER_NOEC(intr_handler_16, 16);   # 16  T_FPERR
+TRAPHANDLER(intr_handler_17, 17);        # 17  T_ALIGN
+TRAPHANDLER_NOEC(intr_handler_18, 18);   # 18  T_MCHK
+TRAPHANDLER_NOEC(intr_handler_19, 19);   # 19  T_SIMDERR
 
 
 
 /*
  * Lab 3: Your code here for _alltraps
  */
+# My code:
+_alltraps:
+  # build trap frame
+  pushl %ds;
+  pushl %es;
+  pushal;
+
+  # set up data segments
+  #  *ss, cs already changed
+  #  *kernel never use fs and gs
+  movw $GD_KD, %ax;
+  movw %ax, %ds;
+  movw %ax, %es;
+
+  # call trap(tf), where tp = %esp
+  pushl %esp;
+  call trap;
+
+  # looks like trap doesn't return
 

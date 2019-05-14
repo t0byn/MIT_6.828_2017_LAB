@@ -71,7 +71,11 @@ trap_init(void)
 	SETGATE(idt[0], 0, GD_KT, intr_handler_0, 0);
 	SETGATE(idt[1], 0, GD_KT, intr_handler_1, 0);
 	SETGATE(idt[2], 0, GD_KT, intr_handler_2, 0);
-	SETGATE(idt[3], 0, GD_KT, intr_handler_3, 0);
+	// In JOS we will abuse this exception slightly by
+	// turning it into a primitive pseudo-system call that 
+	// any user environment can use to invoke the JOS kernel monitor.
+	// So we have to set 'dpl' of the descriptor of interrupt vector3 to 3.
+	SETGATE(idt[3], 0, GD_KT, intr_handler_3, 3);
 	SETGATE(idt[4], 0, GD_KT, intr_handler_4, 0);
 	SETGATE(idt[5], 0, GD_KT, intr_handler_5, 0);
 	SETGATE(idt[6], 0, GD_KT, intr_handler_6, 0);
@@ -169,6 +173,11 @@ trap_dispatch(struct Trapframe *tf)
 	// My code:
 	if (tf->tf_trapno == T_PGFLT) {
 		page_fault_handler(tf);
+		return ;
+	}
+	if (tf->tf_trapno == T_BRKPT) {
+		// invoke the kernel monitor
+		monitor(tf);
 		return ;
 	}
 

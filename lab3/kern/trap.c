@@ -68,24 +68,24 @@ trap_init(void)
 	// My code:
 	// I'm not sure about what value should set on 'istrap' and 'dpl'
 	// so I decide to set them all to zero
-	SETGATE(idt[0], 0, GD_KT, &intr_handler_0, 0);
-	SETGATE(idt[1], 0, GD_KT, &intr_handler_1, 0);
-	SETGATE(idt[2], 0, GD_KT, &intr_handler_2, 0);
-	SETGATE(idt[3], 0, GD_KT, &intr_handler_3, 0);
-	SETGATE(idt[4], 0, GD_KT, &intr_handler_4, 0);
-	SETGATE(idt[5], 0, GD_KT, &intr_handler_5, 0);
-	SETGATE(idt[6], 0, GD_KT, &intr_handler_6, 0);
-	SETGATE(idt[7], 0, GD_KT, &intr_handler_7, 0);
-	SETGATE(idt[8], 0, GD_KT, &intr_handler_8, 0);
-	SETGATE(idt[10], 0, GD_KT, &intr_handler_10, 0);
-	SETGATE(idt[11], 0, GD_KT, &intr_handler_11, 0);
-	SETGATE(idt[12], 0, GD_KT, &intr_handler_12, 0);
-	SETGATE(idt[13], 0, GD_KT, &intr_handler_13, 0);
-	SETGATE(idt[14], 0, GD_KT, &intr_handler_14, 0);
-	SETGATE(idt[16], 0, GD_KT, &intr_handler_16, 0);
-	SETGATE(idt[17], 0, GD_KT, &intr_handler_17, 0);
-	SETGATE(idt[18], 0, GD_KT, &intr_handler_18, 0);
-	SETGATE(idt[19], 0, GD_KT, &intr_handler_19, 0);
+	SETGATE(idt[0], 0, GD_KT, intr_handler_0, 0);
+	SETGATE(idt[1], 0, GD_KT, intr_handler_1, 0);
+	SETGATE(idt[2], 0, GD_KT, intr_handler_2, 0);
+	SETGATE(idt[3], 0, GD_KT, intr_handler_3, 0);
+	SETGATE(idt[4], 0, GD_KT, intr_handler_4, 0);
+	SETGATE(idt[5], 0, GD_KT, intr_handler_5, 0);
+	SETGATE(idt[6], 0, GD_KT, intr_handler_6, 0);
+	SETGATE(idt[7], 0, GD_KT, intr_handler_7, 0);
+	SETGATE(idt[8], 0, GD_KT, intr_handler_8, 0);
+	SETGATE(idt[10], 0, GD_KT, intr_handler_10, 0);
+	SETGATE(idt[11], 0, GD_KT, intr_handler_11, 0);
+	SETGATE(idt[12], 0, GD_KT, intr_handler_12, 0);
+	SETGATE(idt[13], 0, GD_KT, intr_handler_13, 0);
+	SETGATE(idt[14], 0, GD_KT, intr_handler_14, 0);
+	SETGATE(idt[16], 0, GD_KT, intr_handler_16, 0);
+	SETGATE(idt[17], 0, GD_KT, intr_handler_17, 0);
+	SETGATE(idt[18], 0, GD_KT, intr_handler_18, 0);
+	SETGATE(idt[19], 0, GD_KT, intr_handler_19, 0);
 
 
 	// Per-CPU setup 

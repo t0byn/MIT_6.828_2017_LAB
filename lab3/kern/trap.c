@@ -190,10 +190,10 @@ trap_dispatch(struct Trapframe *tf)
 	// system call
 	if (tf->tf_trapno == T_SYSCALL) {
 		// invoke syscall 
-		struct PushRegs tfRegs = tf->tf_regs;
-		tfRegs.reg_eax = syscall(tfRegs.reg_eax, tfRegs.reg_edx, 
-				                 tfRegs.reg_ecx, tfRegs.reg_ebx, 
-				                 tfRegs.reg_edi, tfRegs.reg_esi);
+		struct PushRegs *tfRegs = &tf->tf_regs;
+		tfRegs->reg_eax = syscall(tfRegs->reg_eax, tfRegs->reg_edx, 
+				                  tfRegs->reg_ecx, tfRegs->reg_ebx, 
+				                  tfRegs->reg_edi, tfRegs->reg_esi);
 		return ;
 	}
 

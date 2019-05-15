@@ -66,6 +66,7 @@ TRAPHANDLER(intr_handler_17, 17);        # 17  T_ALIGN
 TRAPHANDLER_NOEC(intr_handler_18, 18);   # 18  T_MCHK
 TRAPHANDLER_NOEC(intr_handler_19, 19);   # 19  T_SIMDERR
 
+TRAPHANDLER_NOEC(intr_handler_48, 48);   # 48  T_SYSCALL
 
 
 /*

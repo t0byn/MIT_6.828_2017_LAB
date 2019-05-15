@@ -71,7 +71,7 @@ trap_init(void)
 	SETGATE(idt[0], 0, GD_KT, intr_handler_0, 0);
 	SETGATE(idt[1], 0, GD_KT, intr_handler_1, 0);
 	SETGATE(idt[2], 0, GD_KT, intr_handler_2, 0);
-	// In JOS we will abuse this exception slightly by
+	// In JOS we will abuse this exception slightly by 
 	// turning it into a primitive pseudo-system call that 
 	// any user environment can use to invoke the JOS kernel monitor.
 	// So we have to set 'dpl' of the descriptor of interrupt vector3 to 3.
@@ -90,6 +90,9 @@ trap_init(void)
 	SETGATE(idt[17], 0, GD_KT, intr_handler_17, 0);
 	SETGATE(idt[18], 0, GD_KT, intr_handler_18, 0);
 	SETGATE(idt[19], 0, GD_KT, intr_handler_19, 0);
+
+	// system call trap descriptor
+	SETGATE(idt[48], 1, GD_KT, intr_handler_48, 3);
 
 
 	// Per-CPU setup 
@@ -171,13 +174,26 @@ trap_dispatch(struct Trapframe *tf)
 	// Handle processor exceptions.
 	// LAB 3: Your code here.
 	// My code:
+	// page fault
 	if (tf->tf_trapno == T_PGFLT) {
 		page_fault_handler(tf);
 		return ;
 	}
+
+	// break point
 	if (tf->tf_trapno == T_BRKPT) {
 		// invoke the kernel monitor
 		monitor(tf);
+		return ;
+	}
+
+	// system call
+	if (tf->tf_trapno == T_SYSCALL) {
+		// invoke syscall 
+		struct PushRegs tfRegs = tf->tf_regs;
+		tfRegs.reg_eax = syscall(tfRegs.reg_eax, tfRegs.reg_edx, 
+				                 tfRegs.reg_ecx, tfRegs.reg_ebx, 
+				                 tfRegs.reg_edi, tfRegs.reg_esi);
 		return ;
 	}
 

@@ -40,4 +40,7 @@ void intr_handler_17();
 void intr_handler_18();
 void intr_handler_19();
 
+// system call interrupt handler
+void intr_handler_48();
+
 #endif /* JOS_KERN_TRAP_H */

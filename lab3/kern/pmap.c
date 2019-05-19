@@ -649,6 +649,33 @@ int
 user_mem_check(struct Env *env, const void *va, size_t len, int perm)
 {
 	// LAB 3: Your code here.
+	// My code:
+	// WARNING: There's a bug in the codes below, consider
+	//          what will happen if start_va = 0xfffff000
+	//          and len = 4096.
+	uintptr_t start_va = (uintptr_t) ROUNDDOWN(va, PGSIZE);
+	uintptr_t end_va   = (uintptr_t) ROUNDUP(va + len, PGSIZE);
+	perm |= PTE_P;
+
+	for ( ; start_va < end_va; start_va += PGSIZE) {
+		// the address above ULIM is not allowed to access
+		if (start_va >= ULIM) {
+			user_mem_check_addr = start_va < (uintptr_t) va ? (uintptr_t) va : start_va;
+			return -E_FAULT;
+		}
+
+		pde_t *pde = env->env_pgdir + PDX(start_va);
+		if ((*pde & perm) == perm) {
+			pte_t *pte = pgdir_walk(env->env_pgdir, (void *) start_va, 0);
+			if ((*pte & perm) != perm) {
+				user_mem_check_addr = start_va < (uintptr_t) va ? (uintptr_t) va : start_va;
+				return -E_FAULT;
+			}
+		} else {
+			user_mem_check_addr = start_va < (uintptr_t) va ? (uintptr_t) va : start_va;
+			return -E_FAULT;
+		}
+	}
 
 	return 0;
 }

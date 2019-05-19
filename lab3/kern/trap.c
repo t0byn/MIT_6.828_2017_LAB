@@ -257,6 +257,13 @@ page_fault_handler(struct Trapframe *tf)
 	// Handle kernel-mode page faults.
 
 	// LAB 3: Your code here.
+	// My code:
+	// Bit 0 and 1 of the code segment selector specifies the privilege level
+	// of the selector. If DPL = 0, that means a page fault happens in kernel
+	// mode. If DPL = 3, that means a page fault happens in user mode.
+	if ((tf->tf_cs & 0x03) == 0) {
+		panic("Page fault happends in kernel mode at va: %x", fault_va);
+	}
 
 	// We've already handled kernel-mode exceptions, so if we get here,
 	// the page fault happened in user mode.

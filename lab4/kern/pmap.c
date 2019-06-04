@@ -691,7 +691,21 @@ mmio_map_region(physaddr_t pa, size_t size)
 	// Hint: The staff solution uses boot_map_region.
 	//
 	// Your code here:
-	panic("mmio_map_region not implemented");
+	// panic("mmio_map_region not implemented");
+	// My code:
+	// round size up to multiple of PGSIZE
+	size_t rounded_size = ROUNDUP(size, PGSIZE);
+	// if this reservation would overflow MMIOLIM then panic
+	if (base + rounded_size > MMIOLIM)
+		panic("mmio_map_region: overflow MMIOLIM");
+
+	// map physical pages [pa, pa+rounded_size) to virtual addresses
+	// [base, base+rounded_size).
+	boot_map_region(kern_pgdir, base, rounded_size, pa, PTE_W | PTE_PCD | PTE_PWT);
+	void *ret_base = (void *) base;
+	base += rounded_size;
+
+	return ret_base;
 }
 
 static uintptr_t user_mem_check_addr;

@@ -342,7 +342,20 @@ page_init(void)
 	i++;
 
 	// case 2)
+	//
+	// mark the physical page at MPENTRY_PADDR as in use.
+	extern unsigned char mpentry_start[], mpentry_end[];
+	size_t mpentry_size = mpentry_end - mpentry_start;
+	physaddr_t mpentry_pa = MPENTRY_PADDR;
+	physaddr_t mpentry_pa_end = ROUNDUP(mpentry_pa + mpentry_size, PGSIZE);
+	for(struct PageInfo* p = pa2page(mpentry_pa); p < pa2page(mpentry_pa_end); p++) {
+		p->pp_ref = 1;
+		p->pp_link = NULL;
+	}
+
 	for( ; i < npages_basemem; i++) {
+		if (pages[i].pp_ref != 0) continue ;
+
 		pages[i].pp_ref = 0;
 		pages[i].pp_link = page_free_list;
 		page_free_list = &pages[i];

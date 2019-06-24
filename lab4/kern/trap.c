@@ -370,6 +370,37 @@ page_fault_handler(struct Trapframe *tf)
 	//   (the 'tf' variable points at 'curenv->env_tf').
 
 	// LAB 4: Your code here.
+	// My code:
+	// If enviroment's page fault upcall function exists
+	if (curenv->env_pgfault_upcall) {
+		struct UTrapframe *utf;
+
+		if (curenv->env_tf.tf_esp >= UXSTACKTOP - PGSIZE &&
+				curenv->env_tf.tf_esp < UXSTACKTOP) {
+			utf = (struct UTrapframe *) (curenv->env_tf.tf_esp - 4 - sizeof(struct UTrapframe));
+		} else {
+			utf = (struct UTrapframe *) (UXSTACKTOP - sizeof(struct UTrapframe));
+		}
+
+		user_mem_assert(curenv, (void *) utf, sizeof(struct UTrapframe), PTE_P | PTE_U | PTE_W);
+
+		// save trap-time state to user exception stack
+		utf->utf_fault_va = (uint32_t) fault_va;
+		utf->utf_err = curenv->env_tf.tf_err;
+		utf->utf_regs = curenv->env_tf.tf_regs;
+		utf->utf_eip = curenv->env_tf.tf_eip;
+		utf->utf_eflags = curenv->env_tf.tf_eflags;
+		utf->utf_esp = curenv->env_tf.tf_esp;
+
+		// resume execution with the page fault handler running on the exception stack
+		curenv->env_tf.tf_eip = (uintptr_t) curenv->env_pgfault_upcall;
+		curenv->env_tf.tf_esp = (uintptr_t) utf;
+
+		// start running user's page fault handler
+		env_run(curenv);
+	}
+	
+	// If enviroment's page fault upcall function not exists
 
 	// Destroy the environment that caused the fault.
 	cprintf("[%08x] user fault va %08x ip %08x\n",

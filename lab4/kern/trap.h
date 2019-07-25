@@ -43,4 +43,22 @@ void intr_handler_19();
 // system call interrupt handler
 void intr_handler_48();
 
+// IRQs handler
+void intr_handler_32();
+void intr_handler_33();
+void intr_handler_34();
+void intr_handler_35();
+void intr_handler_36();
+void intr_handler_37();
+void intr_handler_38();
+void intr_handler_39();
+void intr_handler_40();
+void intr_handler_41();
+void intr_handler_42();
+void intr_handler_43();
+void intr_handler_44();
+void intr_handler_45();
+void intr_handler_46();
+void intr_handler_47();
+
 #endif /* JOS_KERN_TRAP_H */

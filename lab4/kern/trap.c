@@ -101,6 +101,24 @@ trap_init(void)
 	// system call trap descriptor
 	SETGATE(idt[48], 1, GD_KT, intr_handler_48, 3);
 
+	// IRQs
+	SETGATE(idt[IRQ_OFFSET + 0], 0, GD_KT, intr_handler_32, 0);
+	SETGATE(idt[IRQ_OFFSET + 1], 0, GD_KT, intr_handler_33, 0);
+	SETGATE(idt[IRQ_OFFSET + 2], 0, GD_KT, intr_handler_34, 0);
+	SETGATE(idt[IRQ_OFFSET + 3], 0, GD_KT, intr_handler_35, 0);
+	SETGATE(idt[IRQ_OFFSET + 4], 0, GD_KT, intr_handler_36, 0);
+	SETGATE(idt[IRQ_OFFSET + 5], 0, GD_KT, intr_handler_37, 0);
+	SETGATE(idt[IRQ_OFFSET + 6], 0, GD_KT, intr_handler_38, 0);
+	SETGATE(idt[IRQ_OFFSET + 7], 0, GD_KT, intr_handler_39, 0);
+	SETGATE(idt[IRQ_OFFSET + 8], 0, GD_KT, intr_handler_40, 0);
+	SETGATE(idt[IRQ_OFFSET + 9], 0, GD_KT, intr_handler_41, 0);
+	SETGATE(idt[IRQ_OFFSET + 10], 0, GD_KT, intr_handler_42, 0);
+	SETGATE(idt[IRQ_OFFSET + 11], 0, GD_KT, intr_handler_43, 0);
+	SETGATE(idt[IRQ_OFFSET + 12], 0, GD_KT, intr_handler_44, 0);
+	SETGATE(idt[IRQ_OFFSET + 13], 0, GD_KT, intr_handler_45, 0);
+	SETGATE(idt[IRQ_OFFSET + 14], 0, GD_KT, intr_handler_46, 0);
+	SETGATE(idt[IRQ_OFFSET + 15], 0, GD_KT, intr_handler_47, 0);
+
 
 	// Per-CPU setup 
 	trap_init_percpu();

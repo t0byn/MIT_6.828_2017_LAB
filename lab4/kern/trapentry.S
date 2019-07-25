@@ -69,6 +69,25 @@ TRAPHANDLER_NOEC(intr_handler_19, 19);   # 19  T_SIMDERR
 
 TRAPHANDLER_NOEC(intr_handler_48, 48);   # 48  T_SYSCALL
 
+# Lab 4: provide handlers for IRQs 0 through 15
+# My code
+TRAPHANDLER_NOEC(intr_handler_32, IRQ_OFFSET + 0);
+TRAPHANDLER_NOEC(intr_handler_33, IRQ_OFFSET + 1);
+TRAPHANDLER_NOEC(intr_handler_34, IRQ_OFFSET + 2);
+TRAPHANDLER_NOEC(intr_handler_35, IRQ_OFFSET + 3);
+TRAPHANDLER_NOEC(intr_handler_36, IRQ_OFFSET + 4);
+TRAPHANDLER_NOEC(intr_handler_37, IRQ_OFFSET + 5);
+TRAPHANDLER_NOEC(intr_handler_38, IRQ_OFFSET + 6);
+TRAPHANDLER_NOEC(intr_handler_39, IRQ_OFFSET + 7);
+TRAPHANDLER_NOEC(intr_handler_40, IRQ_OFFSET + 8);
+TRAPHANDLER_NOEC(intr_handler_41, IRQ_OFFSET + 9);
+TRAPHANDLER_NOEC(intr_handler_42, IRQ_OFFSET + 10);
+TRAPHANDLER_NOEC(intr_handler_43, IRQ_OFFSET + 11);
+TRAPHANDLER_NOEC(intr_handler_44, IRQ_OFFSET + 12);
+TRAPHANDLER_NOEC(intr_handler_45, IRQ_OFFSET + 13);
+TRAPHANDLER_NOEC(intr_handler_46, IRQ_OFFSET + 14);
+TRAPHANDLER_NOEC(intr_handler_47, IRQ_OFFSET + 15);
+
 
 /*
  * Lab 3: Your code here for _alltraps

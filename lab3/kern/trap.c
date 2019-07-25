@@ -91,8 +91,8 @@ trap_init(void)
 	SETGATE(idt[18], 0, GD_KT, intr_handler_18, 0);
 	SETGATE(idt[19], 0, GD_KT, intr_handler_19, 0);
 
-	// system call trap descriptor
-	SETGATE(idt[48], 1, GD_KT, intr_handler_48, 3);
+	// system call interrupt descriptor
+	SETGATE(idt[48], 0, GD_KT, intr_handler_48, 3);
 
 
 	// Per-CPU setup 

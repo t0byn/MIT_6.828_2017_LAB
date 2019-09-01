@@ -119,7 +119,7 @@ env_init(void)
 	// My code:
 	envs[0].env_id = 0;
 	env_free_list = &envs[0];
-	for(int i = 0; i < NENV; i++) {
+	for(int i = 1; i < NENV; i++) {
 		// Initialize the Env structure
 		envs[i].env_id = 0;
 		// insert Env structure to env_free_list

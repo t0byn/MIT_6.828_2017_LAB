@@ -355,7 +355,8 @@ page_init(void)
 	size_t mpentry_size = mpentry_end - mpentry_start;
 	physaddr_t mpentry_pa = MPENTRY_PADDR;
 	physaddr_t mpentry_pa_end = ROUNDUP(mpentry_pa + mpentry_size, PGSIZE);
-	for(struct PageInfo* p = pa2page(mpentry_pa); p < pa2page(mpentry_pa_end); p++) {
+	for (physaddr_t pa = mpentry_pa; pa < mpentry_pa_end; pa += PGSIZE) {
+		struct PageInfo* p = pa2page(pa);
 		p->pp_ref = 1;
 		p->pp_link = NULL;
 	}
@@ -377,7 +378,7 @@ page_init(void)
 
 	// case 4)
 	assert((uintptr_t) boot_alloc(0) % PGSIZE == 0);
-	size_t allocated_pages = ((uintptr_t) boot_alloc(0) - (KERNBASE + EXTPHYSMEM)) / PGSIZE;
+	size_t allocated_pages = ((uintptr_t) boot_alloc(0) - KERNBASE) / PGSIZE;
 	for(size_t j = 0; j < allocated_pages; j++, i++) {
 		pages[i].pp_ref = 1;
 		pages[i].pp_link = NULL;
@@ -435,7 +436,8 @@ page_free(struct PageInfo *pp)
 	// My code:
 	if(pp->pp_ref != 0) {
 		panic("page_free: pp->pp_ref is nonzero!\n");
-	} else if (pp->pp_link != NULL) {
+	}
+	if (pp->pp_link != NULL) {
 		panic("page_free: pp->pp_link is not NULL!\n");
 	}
 

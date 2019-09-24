@@ -246,7 +246,26 @@ serve_write(envid_t envid, struct Fsreq_write *req)
 		cprintf("serve_write %08x %08x %08x\n", envid, req->req_fileid, req->req_n);
 
 	// LAB 5: Your code here.
-	panic("serve_write not implemented");
+	// panic("serve_write not implemented");
+	// My code:
+	struct OpenFile *o;
+	int r;
+
+	// First, use openfile_lookup to find the relevant open file.
+	if ((r = openfile_lookup(envid, req->req_fileid, &o)) < 0)
+		return r;
+
+	// Second, call the relevant file system function (from fs/fs.c).
+	if ((r = file_write(o->o_file, 
+					(void *) req->req_buf, 
+					req->req_n, 
+					o->o_fd->fd_offset)) < 0)
+		return r;
+
+	// update the seek position
+	o->o_fd->fd_offset += r;
+
+	return r;
 }
 
 // Stat ipc->stat.req_fileid.  Return the file's struct Stat to the
